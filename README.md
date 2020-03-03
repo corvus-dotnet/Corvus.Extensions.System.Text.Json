@@ -124,7 +124,7 @@ propertyBag.TryGet("key1", out SomeSemanticallySimilarType myRetrievedObject); /
 You can implicitly convert the PropertyBag to and from a `string` , and there is an `AsDictionary()` method which returns a `Dictionary<string,object>`. This can also be used to enumerate the underlying JToken values.
 
 ##### `JsonSerializationOptions`
-Internally, all the property values are stored as properties on a` JObject`, which requires serializion/deserialization. There are overloads for each constructor that allow you to set the `JsonSerializationOptions` to be used for conversions. It also has a constructor which takes the `IJsonSerializationOptionsProvider` described above.
+Internally, all the property values are stored in a JSON string. There are overloads for each constructor that allow you to set the `JsonSerializationOptions` to be used for serialization and deserialization conversions. It also has a constructor which takes the `IJsonSerializationOptionsProvider` described above.
 
 #### Microsoft.Extensions.DependencyInjection
 
