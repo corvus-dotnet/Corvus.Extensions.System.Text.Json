@@ -10,6 +10,7 @@ namespace Corvus.Extensions.Json
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Text.Json;
+    using Corvus.Extensions.Json.Internal;
 
     /// <summary>
     /// A property bag that serializes neatly.
@@ -143,61 +144,6 @@ namespace Corvus.Extensions.Json
 
             result = default;
             return false;
-        }
-
-        /// <summary>
-        /// Set a strongly typed property.
-        /// </summary>
-        /// <typeparam name="T">The type of the value.</typeparam>
-        /// <param name="key">The key for the property.</param>
-        /// <param name="value">The value of the property.</param>
-        public void Set<T>(string key, T value)
-        {
-            var reader = new Utf8JsonReader(MemoryMarshal.AsBytes(this.Properties.AsSpan()));
-            var memoryStream = new MemoryStream();
-            using var writer = new Utf8JsonWriter(memoryStream);
-            bool isWritten = false;
-
-            while (reader.Read())
-            {
-                if (reader.TokenType == JsonTokenType.StartObject)
-                {
-                    writer.WriteStartObject();
-                }
-                else if (reader.TokenType == JsonTokenType.PropertyName)
-                {
-                    writer.WritePropertyName(reader.ValueSpan);
-
-                    if (reader.ValueTextEquals(key))
-                    {
-                        // Skip the value
-                        reader.Skip();
-                        JsonSerializer.Serialize(writer, value, this.SerializerOptions);
-                        isWritten = true;
-                    }
-                    else
-                    {
-                        reader.Read();
-                        using var document = JsonDocument.ParseValue(ref reader);
-                        document.RootElement.WriteTo(writer);
-                    }
-                }
-                else if (reader.TokenType == JsonTokenType.EndObject)
-                {
-                    if (!isWritten)
-                    {
-                        writer.WritePropertyName(key);
-                        JsonSerializer.Serialize(writer, value, this.SerializerOptions);
-                    }
-
-                    writer.WriteEndObject();
-                }
-            }
-
-            writer.Flush();
-            memoryStream.Position = 0;
-            using var streamReader = new StreamReader(memoryStream);
-            this.Properties = Encoding.UTF8.GetBytes(streamReader.ReadToEnd());
         }
     }
 }

@@ -36,7 +36,8 @@ namespace Corvus.Extensions.Json.Specs
         public void GivenISetAPropertyCalledToTheValue(string propertyName, string value)
         {
             PropertyBag bag = this.scenarioContext.Get<PropertyBag>();
-            bag.Set(propertyName, value);
+            using IPropertyBagWriter writer = bag.GetWriter();
+            writer.Set(propertyName, value);
         }
 
         [Given(@"I set a property called ""(.*)"" to null")]
@@ -129,7 +130,8 @@ namespace Corvus.Extensions.Json.Specs
         public void GivenISetAPropertyCalledToTheValue(string propertyName, int value)
         {
             PropertyBag bag = this.scenarioContext.Get<PropertyBag>();
-            bag.Set(propertyName, value);
+            using IPropertyBagWriter writer = bag.GetWriter();
+            writer.Set(propertyName, value);
         }
 
         [When("I cast to a string")]
