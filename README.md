@@ -18,7 +18,7 @@ We also supply a standard implementation of this service called `JsonSerializati
 
 This is configured for enum serialization as strings, `camelCase` property names, no dictionary key mapping, and ignored null values. 
 
-[You can see the current defaults here.](https://github.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/blob/master/Solutions/Corvus.Extensions.System.Text.Json/Corvus/Extensions/Json/Internal/JsonSerializationOptionsProvider.cs)
+[You can see the current defaults here.](https://github.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/blob/master/Solutions/Corvus.Extensions.System.Text.Json/Corvus/Extensions/Json/Internal/JsonSerializerOptionsProvider.cs)
 
 One feature of this implementation is that it takes an enumerable of `JsonConverter` objects in its constructor. If you register it in the `Microsoft.Extensions.DependencyInjection` container using the `IServiceCollection` extension method called `AddJsonSerializationOptions()`, then you get the powerful feature that it will then have its converters configured from the container too. Components that wish to add their converters to the standard settings need only add them to the container.
 
