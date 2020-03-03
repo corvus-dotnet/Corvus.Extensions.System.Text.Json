@@ -18,7 +18,7 @@ We also supply a standard implementation of this service called `JsonSerializati
 
 This is configured for enum serialization as strings, `camelCase` property names, no dictionary key mapping, and ignored null values. 
 
-[You can see the current defaults here.](https://github.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/blob/master/Solutions/Corvus.Extensions.System.Text.Json/Corvus/Extensions/Json/Internal/JsonSerializationOptionsProvider.cs)
+[You can see the current defaults here.](https://github.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/blob/master/Solutions/Corvus.Extensions.System.Text.Json/Corvus/Extensions/Json/Internal/JsonSerializerOptionsProvider.cs)
 
 One feature of this implementation is that it takes an enumerable of `JsonConverter` objects in its constructor. If you register it in the `Microsoft.Extensions.DependencyInjection` container using the `IServiceCollection` extension method called `AddJsonSerializationOptions()`, then you get the powerful feature that it will then have its converters configured from the container too. Components that wish to add their converters to the standard settings need only add them to the container.
 
@@ -124,7 +124,7 @@ propertyBag.TryGet("key1", out SomeSemanticallySimilarType myRetrievedObject); /
 You can implicitly convert the PropertyBag to and from a `string` , and there is an `AsDictionary()` method which returns a `Dictionary<string,object>`. This can also be used to enumerate the underlying JToken values.
 
 ##### `JsonSerializationOptions`
-Internally, all the property values are stored as properties on a` JObject`, which requires serializion/deserialization. There are overloads for each constructor that allow you to set the `JsonSerializationOptions` to be used for conversions. It also has a constructor which takes the `IJsonSerializationOptionsProvider` described above.
+Internally, all the property values are stored in a JSON string. There are overloads for each constructor that allow you to set the `JsonSerializationOptions` to be used for serialization and deserialization conversions. It also has a constructor which takes the `IJsonSerializationOptionsProvider` described above.
 
 #### Microsoft.Extensions.DependencyInjection
 
