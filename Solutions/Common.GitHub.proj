@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <GitHubOrg>corvus-dotnet</GitHubOrg>
+    <GitHubProject>Corvus.Extensions.System.Text.Json</GitHubProject>
+  </PropertyGroup>
+</Project>
