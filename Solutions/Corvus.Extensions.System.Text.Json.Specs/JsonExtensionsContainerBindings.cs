@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentHandlingContainerBindings.cs" company="Endjin Limited">
+﻿// <copyright file="JsonExtensionsContainerBindings.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
