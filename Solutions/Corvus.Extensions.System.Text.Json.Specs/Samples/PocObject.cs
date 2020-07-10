@@ -18,22 +18,22 @@ namespace Corvus.Extensions.Json.Specs.Samples
         public string SomeValue { get; set; }
 
         /// <summary>
-        /// Gets or sets a date time offset
+        /// Gets or sets a date time offset.
         /// </summary>
         public DateTimeOffset SomeDateTime { get; set; }
 
         /// <summary>
-        /// Gets or sets a nullable date time offset
+        /// Gets or sets a nullable date time offset.
         /// </summary>
         public DateTimeOffset? SomeNullableDateTime { get; set; }
 
         /// <summary>
-        /// Gets or sets a culture info
+        /// Gets or sets a culture info.
         /// </summary>
         public CultureInfo SomeCulture { get; set; }
 
         /// <summary>
-        /// Gets or sets an enumeration value
+        /// Gets or sets an enumeration value.
         /// </summary>
         public ExampleEnum SomeEnum { get; set; }
 
