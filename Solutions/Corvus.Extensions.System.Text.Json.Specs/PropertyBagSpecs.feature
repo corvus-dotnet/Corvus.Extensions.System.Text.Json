@@ -1,4 +1,5 @@
-﻿@setupContainer
+﻿@perFeatureContainer
+
 Feature: PropertyBagSpecs for SystemTextJson
 	In order to provide strongly typed, extensible properties for a class
 	As a developer

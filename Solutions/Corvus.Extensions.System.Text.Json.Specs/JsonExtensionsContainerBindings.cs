@@ -4,7 +4,7 @@
 
 namespace Corvus.Extensions.Json.Specs
 {
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.SpecFlow;
     using Microsoft.Extensions.DependencyInjection;
     using TechTalk.SpecFlow;
 
@@ -19,7 +19,7 @@ namespace Corvus.Extensions.Json.Specs
         /// </summary>
         /// <remarks>We expect features run in parallel to be executing in separate app domains.</remarks>
         /// <param name="featureContext">The SpecFlow test context.</param>
-        [BeforeFeature("@setupContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
+        [BeforeFeature("@perFeatureContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
         public static void SetupFeature(FeatureContext featureContext)
         {
             ContainerBindings.ConfigureServices(
