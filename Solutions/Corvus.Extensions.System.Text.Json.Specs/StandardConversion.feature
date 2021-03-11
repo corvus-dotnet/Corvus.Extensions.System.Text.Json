@@ -1,4 +1,5 @@
-﻿@setupContainer
+﻿@perFeatureContainer
+
 Feature: StandardConversion for SystemTextJson
 	In order to ensure common serialization specifications
 	As a developer

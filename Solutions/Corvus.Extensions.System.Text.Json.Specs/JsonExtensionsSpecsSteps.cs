@@ -2,9 +2,6 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-#pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable CS1591 // Elements should be documented
-
 namespace Corvus.Extensions.Json.Specs
 {
     using System;
@@ -12,9 +9,8 @@ namespace Corvus.Extensions.Json.Specs
     using System.Globalization;
     using System.IO;
     using System.Text.Json;
-    using System.Text.Json.Serialization;
     using Corvus.Extensions.Json.Specs.Samples;
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.SpecFlow;
     using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
     using TechTalk.SpecFlow;
@@ -295,6 +291,3 @@ namespace Corvus.Extensions.Json.Specs
         }
     }
 }
-
-#pragma warning restore SA1600 // Elements should be documented
-#pragma warning restore CS1591 // Elements should be documented
