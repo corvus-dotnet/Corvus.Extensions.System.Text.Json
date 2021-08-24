@@ -1,6 +1,6 @@
 # Corvus.Extensions.System.Text.Json
-[![Build Status](https://dev.azure.com/endjin-labs/Corvus.Extensions.System.Text.Json/_apis/build/status/corvus-dotnet.Corvus.Extensions.System.Text.Json?branchName=master)](https://dev.azure.com/endjin-labs/Corvus.Extensions.System.Text.Json/_build/latest?definitionId=4&branchName=master)
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/master/LICENSE)
+[![Build Status](https://dev.azure.com/endjin-labs/Corvus.Extensions.System.Text.Json/_apis/build/status/corvus-dotnet.Corvus.Extensions.System.Text.Json?branchName=main)](https://dev.azure.com/endjin-labs/Corvus.Extensions.System.Text.Json/_build/latest?definitionId=4&branchName=main)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/main/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Extensions.System.Text.Json/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Extensions.System.Text.Json/total?cache=false)
 
 This provides opinionated configuration and DI support for System.Text.Json serialization.
@@ -18,7 +18,7 @@ We also supply a standard implementation of this service called `JsonSerializati
 
 This is configured for enum serialization as strings, `camelCase` property names, no dictionary key mapping, and ignored null values. 
 
-[You can see the current defaults here.](https://github.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/blob/master/Solutions/Corvus.Extensions.System.Text.Json/Corvus/Extensions/Json/Internal/JsonSerializerOptionsProvider.cs)
+[You can see the current defaults here.](https://github.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/blob/main/Solutions/Corvus.Extensions.System.Text.Json/Corvus/Extensions/Json/Internal/JsonSerializerOptionsProvider.cs)
 
 One feature of this implementation is that it takes an enumerable of `JsonConverter` objects in its constructor. If you register it in the `Microsoft.Extensions.DependencyInjection` container using the `IServiceCollection` extension method called `AddJsonSerializationOptions()`, then you get the powerful feature that it will then have its converters configured from the container too. Components that wish to add their converters to the standard settings need only add them to the container.
 
@@ -132,7 +132,7 @@ While you can create instances of this type by hand, it is recommended that you 
 
 ## Licenses
 
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.System.Text.Json/main/LICENSE)
 
 Corvus.Extensions.System.Text.Json is available under the Apache 2.0 open source license.
 
