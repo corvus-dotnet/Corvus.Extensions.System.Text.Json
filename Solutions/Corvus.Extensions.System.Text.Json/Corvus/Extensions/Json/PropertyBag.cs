@@ -6,11 +6,8 @@ namespace Corvus.Extensions.Json
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Runtime.InteropServices;
     using System.Text;
     using System.Text.Json;
-    using Corvus.Extensions.Json.Internal;
 
     /// <summary>
     /// A property bag that serializes neatly.
@@ -20,7 +17,7 @@ namespace Corvus.Extensions.Json
         /// <summary>
         /// Gets the fallback default JsonSerializerOptions.
         /// </summary>
-        public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new JsonSerializerOptions();
+        public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new();
 
         private static readonly byte[] EmptyObject = Encoding.UTF8.GetBytes("{}");
 

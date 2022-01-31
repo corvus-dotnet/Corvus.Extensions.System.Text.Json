@@ -79,7 +79,7 @@ namespace Corvus.Extensions.Json.Specs.Samples
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return (this.SomeValue, this.SomeDateTime, this.SomeNullableDateTime, this.SomeCulture, this.SomeEnum).GetHashCode();
+            return HashCode.Combine(this.SomeValue, this.SomeDateTime, this.SomeNullableDateTime, this.SomeCulture, this.SomeEnum);
         }
     }
 }
