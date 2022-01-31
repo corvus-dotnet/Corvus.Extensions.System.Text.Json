@@ -13,7 +13,7 @@ namespace Corvus.Extensions.Json.Internal
     /// </summary>
     internal class PropertyBagWriter : IPropertyBagWriter
     {
-        private readonly Dictionary<string, object> entities = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> entities = new();
         private readonly PropertyBag bag;
         private JsonDocument document;
 
