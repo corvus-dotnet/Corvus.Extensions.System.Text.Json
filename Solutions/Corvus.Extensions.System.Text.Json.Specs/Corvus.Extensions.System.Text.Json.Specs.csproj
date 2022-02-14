@@ -45,7 +45,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[3.1.*,)" />
-    <PackageReference Include="Corvus.Testing.SpecFlow.NUnit" Version="1.4.7" />
+    <PackageReference Include="Corvus.Testing.SpecFlow.NUnit" Version="1.4.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Corvus.Extensions.System.Text.Json\Corvus.Extensions.System.Text.Json.csproj" />
