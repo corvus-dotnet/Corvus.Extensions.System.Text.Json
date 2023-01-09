@@ -4,8 +4,13 @@
 
 namespace Corvus.Extensions.Json.Specs
 {
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
+
     using Corvus.Testing.SpecFlow;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using TechTalk.SpecFlow;
 
     /// <summary>
@@ -24,7 +29,11 @@ namespace Corvus.Extensions.Json.Specs
         {
             ContainerBindings.ConfigureServices(
                 featureContext,
-                serviceCollection => serviceCollection.AddJsonSerializerSettings());
+                serviceCollection => serviceCollection
+                    .AddJsonSerializerSettingsProvider()
+                    .AddJsonPropertyBagFactory()
+                    .AddJsonCultureInfoConverter()
+                    .AddSingleton<JsonConverter>(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
         }
     }
 }

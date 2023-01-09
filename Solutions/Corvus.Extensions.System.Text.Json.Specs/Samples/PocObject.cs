@@ -15,7 +15,7 @@ namespace Corvus.Extensions.Json.Specs.Samples
         /// <summary>
         /// Gets or sets a simple value.
         /// </summary>
-        public string SomeValue { get; set; }
+        public string? SomeValue { get; set; }
 
         /// <summary>
         /// Gets or sets a date time offset.
@@ -30,7 +30,7 @@ namespace Corvus.Extensions.Json.Specs.Samples
         /// <summary>
         /// Gets or sets a culture info.
         /// </summary>
-        public CultureInfo SomeCulture { get; set; }
+        public CultureInfo? SomeCulture { get; set; }
 
         /// <summary>
         /// Gets or sets an enumeration value.
@@ -60,13 +60,13 @@ namespace Corvus.Extensions.Json.Specs.Samples
         }
 
         /// <inheritdoc />
-        public bool Equals(PocObject other)
+        public bool Equals(PocObject? other)
         {
-            return (this.SomeValue, this.SomeDateTime, this.SomeNullableDateTime, this.SomeCulture?.Name, this.SomeEnum) == (other.SomeValue, other.SomeDateTime, other.SomeNullableDateTime, other.SomeCulture?.Name, other.SomeEnum);
+            return other is not null && (this.SomeValue, this.SomeDateTime, this.SomeNullableDateTime, this.SomeCulture?.Name, this.SomeEnum) == (other.SomeValue, other.SomeDateTime, other.SomeNullableDateTime, other.SomeCulture?.Name, other.SomeEnum);
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is PocObject sci)
             {

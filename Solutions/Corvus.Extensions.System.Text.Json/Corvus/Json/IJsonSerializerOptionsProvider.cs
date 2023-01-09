@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.Extensions.Json
+namespace Corvus.Json
 {
     using System.Text.Json;
     using System.Text.Json.Serialization;

@@ -1,0 +1,88 @@
+﻿// <copyright file="JsonPropertyBagFactory.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
+// </copyright>
+
+namespace Corvus.Json.Internal;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+
+using Corvus.Json;
+
+/// <summary>
+/// A factory for building property bags that serialize neatly using System.Text.Json.
+/// </summary>
+internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
+{
+    private readonly IJsonSerializerOptionsProvider serializerOptionsProvider;
+
+    /// <summary>
+    /// Creates a <see cref="JsonPropertyBagFactory"/>.
+    /// </summary>
+    /// <param name="serializerOptionsProvider">Source of serialization settings.</param>
+    public JsonPropertyBagFactory(IJsonSerializerOptionsProvider serializerOptionsProvider)
+    {
+        this.serializerOptionsProvider = serializerOptionsProvider;
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create(ReadOnlyMemory<byte> jsonUtf8)
+    {
+        return new JsonPropertyBag(jsonUtf8, this.serializerOptionsProvider.Instance);
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create(IEnumerable<KeyValuePair<string, object>> values)
+    {
+        MemoryStream ms = new();
+        IReadOnlyDictionary<string, object> d = values is IReadOnlyDictionary<string, object> id
+            ? id : new Dictionary<string, object>(values);
+        JsonSerializer.Serialize(ms, d, this.serializerOptionsProvider.Instance);
+        ms.Flush();
+        return new JsonPropertyBag(ms.ToArray(), this.serializerOptionsProvider.Instance);
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag CreateModified(
+        IPropertyBag input,
+        IEnumerable<KeyValuePair<string, object>>? propertiesToSetOrAdd,
+        IEnumerable<string>? propertiesToRemove)
+    {
+        IReadOnlyDictionary<string, object> existingProperties = input.AsDictionary();
+        Dictionary<string, object> newProperties = propertiesToSetOrAdd?.ToDictionary(kv => kv.Key, kv => kv.Value)
+            ?? new Dictionary<string, object>();
+        HashSet<string>? remove = propertiesToRemove == null ? null : new HashSet<string>(propertiesToRemove);
+        foreach (KeyValuePair<string, object> existingKv in existingProperties)
+        {
+            string key = existingKv.Key;
+            bool newPropertyWithThisNameExists = newProperties.ContainsKey(key);
+            bool existingPropertyIsToBeRemoved = remove?.Contains(key) == true;
+            if (newPropertyWithThisNameExists && existingPropertyIsToBeRemoved)
+            {
+                throw new ArgumentException($"Property {key} appears in both {nameof(propertiesToSetOrAdd)} and {nameof(propertiesToRemove)}");
+            }
+
+            if (!newPropertyWithThisNameExists && !existingPropertyIsToBeRemoved)
+            {
+                newProperties.Add(key, existingKv.Value);
+            }
+        }
+
+        return this.Create(newProperties);
+    }
+
+    /// <inheritdoc/>
+    public void WriteTo(IPropertyBag propertyBag, Utf8JsonWriter writer)
+    {
+        if (propertyBag is not JsonPropertyBag jsonNetPropertyBag)
+        {
+            throw new ArgumentException("This property bag did not come from this factory", nameof(propertyBag));
+        }
+
+        Utf8JsonReader r = new(jsonNetPropertyBag.RawJson.Span);
+        JsonElement.ParseValue(ref r).WriteTo(writer);
+    }
+}

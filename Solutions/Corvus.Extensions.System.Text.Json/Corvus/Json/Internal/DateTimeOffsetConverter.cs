@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.Extensions.Json.Internal
+namespace Corvus.Json.Internal
 {
     using System;
     using System.Text.Json;
@@ -27,29 +27,43 @@ namespace Corvus.Extensions.Json.Internal
         /// <inheritdoc/>
         public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonTokenType.String && reader.TryGetDateTimeOffset(out DateTimeOffset resultAsDate))
+            if (reader.TokenType == JsonTokenType.String)
             {
+                if (!reader.TryGetDateTimeOffset(out DateTimeOffset resultAsDate))
+                {
+                    throw new JsonException("String was not a valid DateTimeOffset");
+                }
+
                 return resultAsDate;
             }
 
             if (reader.TokenType == JsonTokenType.StartObject)
             {
-                DateTimeOffset result;
                 while (reader.Read())
                 {
                     if (reader.TokenType == JsonTokenType.EndObject)
                     {
                         // No property present, return null value
-                        return result;
+                        throw new JsonException("Cannot parse object as DateTimeOffset unless it contains a dateTimeOffset property");
                     }
 
                     if (reader.TokenType == JsonTokenType.PropertyName)
                     {
                         if (reader.ValueTextEquals("dateTimeOffset"))
                         {
-                            // reader to the value
+                            // Advance reader to the value
                             reader.Read();
-                            result = reader.GetDateTimeOffset();
+                            DateTimeOffset result = reader.GetDateTimeOffset();
+
+                            // There may be other properties (e.g. the unixTime one might follow the
+                            // dateTimeOffset) so we skip over all other properies until we reach the
+                            // end of the object.
+                            while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
+                            {
+                                reader.Skip();
+                            }
+
+                            return result;
                         }
                         else
                         {
@@ -59,7 +73,7 @@ namespace Corvus.Extensions.Json.Internal
                 }
             }
 
-            return default;
+            throw new JsonException("Cannot parse object as DateTimeOffset unless it is either a string, or an object with a dateTimeOffset property");
         }
 
         /// <inheritdoc/>

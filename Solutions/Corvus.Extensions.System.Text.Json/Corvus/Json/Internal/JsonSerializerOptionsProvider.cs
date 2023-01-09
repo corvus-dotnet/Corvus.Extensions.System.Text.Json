@@ -2,11 +2,13 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.Extensions.Json.Internal
+namespace Corvus.Json.Internal
 {
     using System.Collections.Generic;
     using System.Text.Json;
     using System.Text.Json.Serialization;
+
+    using Corvus.Json;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="JsonSerializerOptionsProvider"/> class.
@@ -26,7 +28,7 @@ namespace Corvus.Extensions.Json.Internal
             {
                 AllowTrailingCommas = false,
                 DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
-                IgnoreNullValues = true,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 IgnoreReadOnlyProperties = false,
                 PropertyNameCaseInsensitive = false,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

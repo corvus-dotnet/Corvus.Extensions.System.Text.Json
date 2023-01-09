@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.Extensions.Json.Internal
+namespace Corvus.Json.Internal
 {
     using System;
     using System.Globalization;
@@ -26,9 +26,9 @@ namespace Corvus.Extensions.Json.Internal
         }
 
         /// <inheritdoc/>
-        public override CultureInfo Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override CultureInfo? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            string value = reader.GetString();
+            string? value = reader.GetString();
             if (value != null)
             {
                 return new CultureInfo(value);
