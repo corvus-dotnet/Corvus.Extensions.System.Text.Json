@@ -15,6 +15,10 @@ resources:
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: corvus-dotnet-github
 
+variables:
+- name: Endjin.ForcePublish
+  value: false
+
 jobs:
 - template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
@@ -23,7 +27,5 @@ jobs:
     service_connection_github: $(Endjin_Service_Connection_GitHub)
     solution_to_build: $(Endjin_Solution_To_Build)
     netSdkVersion: '6.x'
-    additionalNetSdkVersions: 
-      - '3.x'
     compileTasksServiceConnection: endjin-acr-reader
 
