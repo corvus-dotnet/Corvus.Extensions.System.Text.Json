@@ -15,10 +15,6 @@ resources:
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: corvus-dotnet-github
 
-variables:
-- name: Endjin.ForcePublish
-  value: false
-
 jobs:
 - template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
