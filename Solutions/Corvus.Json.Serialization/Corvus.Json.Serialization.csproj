@@ -8,6 +8,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageDescription>JSON serialization utilities for System.Text.Json</PackageDescription>
+    <PackageTags></PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.4">
       <PrivateAssets>all</PrivateAssets>

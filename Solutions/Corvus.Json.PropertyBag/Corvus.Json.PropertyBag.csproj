@@ -10,8 +10,8 @@
 
   <PropertyGroup>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageDescription></PackageDescription>
-    <PackageTags></PackageTags>
+    <PackageDescription>IPropertyBag implementation for System.Text.Json</PackageDescription>
+    <PackageTags>propertybag</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
