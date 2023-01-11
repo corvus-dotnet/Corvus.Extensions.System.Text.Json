@@ -39,10 +39,34 @@ internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
     /// <inheritdoc/>
     public IPropertyBag Create(IEnumerable<KeyValuePair<string, object>> values)
     {
-        MemoryStream ms = new();
         IReadOnlyDictionary<string, object> d = values is IReadOnlyDictionary<string, object> id
             ? id : new Dictionary<string, object>(values);
-        JsonSerializer.Serialize(ms, d, this.serializerOptionsProvider.Instance);
+
+        // We don't just serialize like this:
+        //  JsonSerializer.Serialize(ms, d, this.serializerOptionsProvider.Instance);
+        // because the JsonSerializerOptions are typically set up for camelCasing. And while
+        // that's what we want for the objects in the property bag, the property bag itself
+        // needs to preserve the case of the properies
+        MemoryStream ms = new();
+        using (Utf8JsonWriter w = new(ms))
+        {
+            w.WriteStartObject();
+            foreach ((string key, object value) in d)
+            {
+                w.WritePropertyName(key);
+                if (value is null)
+                {
+                    w.WriteNullValue();
+                }
+                else
+                {
+                    JsonSerializer.Serialize(w, value, value.GetType(), this.serializerOptionsProvider.Instance);
+                }
+            }
+
+            w.WriteEndObject();
+        }
+
         ms.Flush();
         return new JsonPropertyBag(ms.ToArray(), this.serializerOptionsProvider.Instance);
     }

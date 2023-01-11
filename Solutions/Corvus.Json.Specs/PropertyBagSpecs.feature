@@ -40,6 +40,20 @@ Scenario: Convert to a JsonDocument
 	| fpnumber | 3.14                      | fp      |
 	| date     | 2020-04-17T07:06:10+01:00 | string  |
 
+Scenario: Convert to a JsonDocument with non-Pascal-cased property names
+	Given the creation properties include "Hello" with the value "World"
+	And the creation properties include "Number" with the value 3
+	And the creation properties include "FpNumber" with the floating point value 3.14
+	And the creation properties include "Date" with the date value "2020-04-17T07:06:10+01:00"
+	And I create the property bag from the creation properties
+	When I get the property bag as a JsonDocument
+	Then the JsonDocument should have these properties
+	| Property | Value                     | Type    |
+	| Hello    | World                     | string  |
+	| Number   | 3                         | integer |
+	| FpNumber | 3.14                      | fp      |
+	| Date     | 2020-04-17T07:06:10+01:00 | string  |
+
 Scenario: Convert to a JSON string
 	Given the creation properties include "hello" with the value "world"
 	And the creation properties include "number" with the value 3

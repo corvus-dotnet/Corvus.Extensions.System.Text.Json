@@ -384,7 +384,9 @@ public class JsonExtensionsSpecsSteps
     {
         foreach ((string Property, string Value, string Type) row in table.CreateSet<(string Property, string Value, string Type)>())
         {
-            Assert.IsTrue(this.jsonDocument!.RootElement.TryGetProperty(row.Property, out JsonElement property));
+            Assert.IsTrue(
+                this.jsonDocument!.RootElement.TryGetProperty(row.Property, out JsonElement property),
+                $"Getting property {row.Property}");
             (JsonValueKind expectedKind, object expectedValue, object actualValue) = row.Type switch
             {
                 "string" => (JsonValueKind.String, (object)row.Value, (object)property.GetString()!),
