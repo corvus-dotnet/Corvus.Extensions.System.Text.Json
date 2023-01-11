@@ -442,7 +442,7 @@ public class JsonExtensionsSpecsSteps
             .AddJsonSerializerSettingsProvider()
             .AddJsonPropertyBagFactory()
             .AddJsonCultureInfoConverter()
-            .AddJsonNetDateTimeOffsetToIso8601AndUnixTimeConverter()
+            .AddJsonDateTimeOffsetToIso8601AndUnixTimeConverter()
             .AddSingleton<JsonConverter>(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
         IServiceProvider serviceProvider = services.BuildServiceProvider();
         return serviceProvider.GetRequiredService<IJsonSerializerOptionsProvider>();

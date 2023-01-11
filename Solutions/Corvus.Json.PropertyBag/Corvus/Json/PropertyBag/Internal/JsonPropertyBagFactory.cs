@@ -103,12 +103,12 @@ internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
     /// <inheritdoc/>
     public void WriteTo(IPropertyBag propertyBag, Utf8JsonWriter writer)
     {
-        if (propertyBag is not JsonPropertyBag jsonNetPropertyBag)
+        if (propertyBag is not JsonPropertyBag jsonPropertyBag)
         {
             throw new ArgumentException("This property bag did not come from this factory", nameof(propertyBag));
         }
 
-        Utf8JsonReader r = new(jsonNetPropertyBag.RawJson.Span);
+        Utf8JsonReader r = new(jsonPropertyBag.RawJson.Span);
         JsonElement.ParseValue(ref r).WriteTo(writer);
     }
 }

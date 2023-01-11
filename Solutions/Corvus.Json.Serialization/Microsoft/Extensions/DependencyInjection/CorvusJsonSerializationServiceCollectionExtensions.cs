@@ -95,7 +95,7 @@ public static class CorvusJsonSerializationServiceCollectionExtensions
     /// time zone values.
     /// </para>
     /// </remarks>
-    public static IServiceCollection AddJsonNetDateTimeOffsetToIso8601AndUnixTimeConverter(this IServiceCollection services)
+    public static IServiceCollection AddJsonDateTimeOffsetToIso8601AndUnixTimeConverter(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 

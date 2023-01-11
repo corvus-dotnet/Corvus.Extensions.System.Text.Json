@@ -31,7 +31,7 @@ public static class CorvusJsonPropertyBagSerializationServiceCollectionExtension
     /// services.AddJsonSerializerSettingsProvider();
     /// services.AddJsonPropertyBagFactory();
     /// services.AddJsonCultureInfoConverter();
-    /// services.AddJsonNetDateTimeOffsetToIso8601AndUnixTimeConverter();
+    /// services.AddJsonDateTimeOffsetToIso8601AndUnixTimeConverter();
     /// services.AddSingleton<JsonConverter>(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
     /// ]]>
     /// </code>
