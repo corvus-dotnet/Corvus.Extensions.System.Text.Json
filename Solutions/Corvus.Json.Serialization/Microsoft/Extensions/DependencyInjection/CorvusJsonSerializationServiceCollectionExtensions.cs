@@ -20,7 +20,7 @@ using Corvus.Json.Serialization.Internal;
 public static class CorvusJsonSerializationServiceCollectionExtensions
 {
     /// <summary>
-    /// Add the default JSON serialization settings provider.
+    /// Add the default JSON serialization options provider.
     /// </summary>
     /// <param name="services">The target service collection.</param>
     /// <param name="configurationCallback">Optional callback used to modify the <see cref="JsonSerializerOptions"/>.</param>
@@ -29,7 +29,7 @@ public static class CorvusJsonSerializationServiceCollectionExtensions
     /// Thrown if this service has already been configured, and this call supplied a callback. (We will be unable
     /// to invoke the callback supplied in this case.)
     /// </exception>
-    public static IServiceCollection AddJsonSerializerSettingsProvider(
+    public static IServiceCollection AddJsonSerializerOptionsProvider(
         this IServiceCollection services,
         Action<IServiceProvider, JsonSerializerOptions>? configurationCallback = null)
     {

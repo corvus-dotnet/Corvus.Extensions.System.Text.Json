@@ -30,7 +30,7 @@ public static class JsonExtensionsContainerBindings
         ContainerBindings.ConfigureServices(
             featureContext,
             serviceCollection => serviceCollection
-                .AddJsonSerializerSettingsProvider()
+                .AddJsonSerializerOptionsProvider()
                 .AddJsonPropertyBagFactory()
                 .AddJsonCultureInfoConverter()
                 .AddSingleton<JsonConverter>(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));

@@ -439,7 +439,7 @@ public class JsonExtensionsSpecsSteps
     private static IJsonSerializerOptionsProvider GetSerializerOptionsWithOddDateTimeOffsetHandling()
     {
         IServiceCollection services = new ServiceCollection()
-            .AddJsonSerializerSettingsProvider()
+            .AddJsonSerializerOptionsProvider()
             .AddJsonPropertyBagFactory()
             .AddJsonCultureInfoConverter()
             .AddJsonDateTimeOffsetToIso8601AndUnixTimeConverter()
