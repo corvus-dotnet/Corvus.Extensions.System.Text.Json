@@ -25,7 +25,7 @@ namespace Corvus.Json.PropertyBag.Internal
         public override IPropertyBag Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             using var document = JsonDocument.ParseValue(ref reader);
-            return new JsonPropertyBag(document.RootElement.GetRawText(), options);
+            return new JsonPropertyBag(document.RootElement, options);
         }
 
         /// <inheritdoc/>
@@ -44,9 +44,7 @@ namespace Corvus.Json.PropertyBag.Internal
                     throw new InvalidOperationException($"Can only serialize {nameof(JsonPropertyBag)}, but this is a {value.GetType().Name}.");
                 }
 
-                using var jsonDocument = JsonDocument.Parse(jpb.RawJson);
-
-                jsonDocument.RootElement.WriteTo(writer);
+                jpb.RawJson.WriteTo(writer);
             }
         }
     }

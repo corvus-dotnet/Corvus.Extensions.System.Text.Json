@@ -33,7 +33,8 @@ internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
     /// <inheritdoc/>
     public IPropertyBag Create(ReadOnlyMemory<byte> jsonUtf8)
     {
-        return new JsonPropertyBag(jsonUtf8, this.serializerOptionsProvider.Instance);
+        using var doc = JsonDocument.Parse(jsonUtf8);
+        return new JsonPropertyBag(doc.RootElement, this.serializerOptionsProvider.Instance);
     }
 
     /// <inheritdoc/>
@@ -68,7 +69,26 @@ internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
         }
 
         ms.Flush();
-        return new JsonPropertyBag(ms.ToArray(), this.serializerOptionsProvider.Instance);
+        using var doc = JsonDocument.Parse(ms.ToArray());
+        return new JsonPropertyBag(doc.RootElement, this.serializerOptionsProvider.Instance);
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create(in JsonElement json)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create(Action<Utf8JsonWriter> callback)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create<TContext>(TContext context, Action<TContext, Utf8JsonWriter> callback)
+    {
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc/>
@@ -108,7 +128,6 @@ internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
             throw new ArgumentException("This property bag did not come from this factory", nameof(propertyBag));
         }
 
-        Utf8JsonReader r = new(jsonPropertyBag.RawJson.Span);
-        JsonElement.ParseValue(ref r).WriteTo(writer);
+        jsonPropertyBag.RawJson.WriteTo(writer);
     }
 }

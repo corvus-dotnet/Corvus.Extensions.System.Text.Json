@@ -20,13 +20,17 @@ public static class JsonPropertyBagFactoryExtensions
     /// </summary>
     /// <param name="factory">The property bag factory.</param>
     /// <param name="propertyBag">The property bag.</param>
-    /// <returns>The property bag as a <see cref="JsonDocument"/>.</returns>
+    /// <returns>
+    /// The property bag as a <see cref="JsonElement"/>. This will have been created using
+    /// <see cref="JsonElement.Clone"/>, so its lifetime is not tied to a particular
+    /// <see cref="JsonDocument"/>'s lifetime.
+    /// </returns>
     /// <exception cref="ArgumentException">
     /// Thrown if the property bag does not support conversion to JSON.
     /// The property bag must have been created by ths Json.NET property bag factory
     /// or associated deserialization logic for this call to succeed.
     /// </exception>
-    public static JsonDocument AsJsonDocument(this IJsonPropertyBagFactory factory, IPropertyBag propertyBag)
+    public static JsonElement AsJsonElement(this IJsonPropertyBagFactory factory, IPropertyBag propertyBag)
     {
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(propertyBag);
@@ -39,6 +43,7 @@ public static class JsonPropertyBagFactoryExtensions
             throw new ArgumentException("This property bag did not come from this factory", nameof(propertyBag));
         }
 
-        return JsonDocument.Parse(jpb.RawJson);
+        // The JsonElement held by the JsonPropertyBag is already cloned, so it is safe to return.
+        return jpb.RawJson;
     }
 }

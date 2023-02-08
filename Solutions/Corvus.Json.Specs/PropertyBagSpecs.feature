@@ -26,28 +26,28 @@ Scenario: Get and set a badly serialized property
 	And I get the property called "hello" as a custom object expecting an exception
 	Then TryGet should have thrown a SerializationException
 
-Scenario: Convert to a JsonDocument
+Scenario: Convert to a JsonElement
 	Given the creation properties include "hello" with the value "world"
 	And the creation properties include "number" with the value 3
 	And the creation properties include "fpnumber" with the floating point value 3.14
 	And the creation properties include "date" with the date value "2020-04-17T07:06:10+01:00"
 	And I create the property bag from the creation properties
-	When I get the property bag as a JsonDocument
-	Then the JsonDocument should have these properties
+	When I get the property bag as a JsonElement
+	Then the JsonElement should have these properties
 	| Property | Value                     | Type    |
 	| hello    | world                     | string  |
 	| number   | 3                         | integer |
 	| fpnumber | 3.14                      | fp      |
 	| date     | 2020-04-17T07:06:10+01:00 | string  |
 
-Scenario: Convert to a JsonDocument with non-Pascal-cased property names
+Scenario: Convert to a JsonElement with non-Pascal-cased property names
 	Given the creation properties include "Hello" with the value "World"
 	And the creation properties include "Number" with the value 3
 	And the creation properties include "FpNumber" with the floating point value 3.14
 	And the creation properties include "Date" with the date value "2020-04-17T07:06:10+01:00"
 	And I create the property bag from the creation properties
-	When I get the property bag as a JsonDocument
-	Then the JsonDocument should have these properties
+	When I get the property bag as a JsonElement
+	Then the JsonElement should have these properties
 	| Property | Value                     | Type    |
 	| Hello    | World                     | string  |
 	| Number   | 3                         | integer |
@@ -60,8 +60,8 @@ Scenario: Convert to a JSON string
 	And the creation properties include "fpnumber" with the floating point value 3.14
 	And the creation properties include "date" with the date value "2020-04-17T07:06:10+01:00"
 	And I create the property bag from the creation properties
-	When I get the property bag's JSON and write it to a JsonDocument
-	Then the JsonDocument should have these properties
+	When I get the property bag's JSON and write it to a JsonElement
+	Then the JsonElement should have these properties
 	| Property | Value                     | Type    |
 	| hello    | world                     | string  |
 	| number   | 3                         | integer |

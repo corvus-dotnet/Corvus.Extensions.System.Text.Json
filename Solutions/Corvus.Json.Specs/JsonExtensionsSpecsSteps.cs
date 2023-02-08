@@ -36,7 +36,7 @@ public class JsonExtensionsSpecsSteps
     private readonly Dictionary<string, object> creationProperties = new();
     private readonly Dictionary<string, IPropertyBag> namedPropertyBags = new();
     private IPropertyBag? propertyBag;
-    private JsonDocument? jsonDocument;
+    private JsonElement? jsonElement;
     private string? serializedJson;
     private SerializationException? exception;
     private byte[]? utf8Json;
@@ -51,6 +51,8 @@ public class JsonExtensionsSpecsSteps
     }
 
     private IPropertyBag Bag => this.propertyBag ?? throw new InvalidOperationException("The test is trying to use property bag before it has been created");
+
+    private JsonElement JsonElement => this.jsonElement ?? throw new InvalidOperationException("The test is trying to use a JsonElement before retrieving it");
 
     [Given(@"the creation properties include ""(.*)"" with the value ""([^""]*)""")]
     public void TheCreationPropertiesInclude(string propertyName, string value)
@@ -306,13 +308,13 @@ public class JsonExtensionsSpecsSteps
         }
     }
 
-    [When("I get the property bag as a JsonDocument")]
-    public void WhenIGetPropertyBagAsJsonDocument()
+    [When("I get the property bag as a JsonElement")]
+    public void WhenIGetPropertyBagAsJsonElement()
     {
-        this.jsonDocument = this.jPropertyBagFactory.AsJsonDocument(this.Bag);
+        this.jsonElement = this.jPropertyBagFactory.AsJsonElement(this.Bag);
     }
 
-    [When("I get the property bag's JSON and write it to a JsonDocument")]
+    [When("I get the property bag's JSON and write it to a JsonElement")]
     public void WhenIGetPropertyBagsJSON()
     {
         MemoryStream ms = new();
@@ -321,7 +323,7 @@ public class JsonExtensionsSpecsSteps
             this.jPropertyBagFactory.WriteTo(this.Bag, w);
         }
 
-        this.jsonDocument = this.jPropertyBagFactory.AsJsonDocument(this.Bag);
+        this.jsonElement = this.jPropertyBagFactory.AsJsonElement(this.Bag);
     }
 
     [When("I add, modify, or remove properties")]
@@ -379,13 +381,13 @@ public class JsonExtensionsSpecsSteps
         Assert.IsInstanceOf<SerializationException>(this.exception);
     }
 
-    [Then("the JsonDocument should have these properties")]
-    public void ThenTheJsonDocumentShouldHaveTheseProperties(Table table)
+    [Then("the JsonElement should have these properties")]
+    public void ThenTheJsonElementShouldHaveTheseProperties(Table table)
     {
         foreach ((string Property, string Value, string Type) row in table.CreateSet<(string Property, string Value, string Type)>())
         {
             Assert.IsTrue(
-                this.jsonDocument!.RootElement.TryGetProperty(row.Property, out JsonElement property),
+                this.JsonElement.TryGetProperty(row.Property, out JsonElement property),
                 $"Getting property {row.Property}");
             (JsonValueKind expectedKind, object expectedValue, object actualValue) = row.Type switch
             {
@@ -499,7 +501,7 @@ public class JsonExtensionsSpecsSteps
 
     private static void AssertPropertyBagDoesNotHaveProperties(IPropertyBag bag, Table table)
     {
-        foreach ((string name, _, _) in table.CreateSet<(string Property, string Value, string Type)>())
+        foreach (string name in table.CreateSet<string>())
         {
             Assert.IsFalse(bag.TryGet(name, out object? _));
         }

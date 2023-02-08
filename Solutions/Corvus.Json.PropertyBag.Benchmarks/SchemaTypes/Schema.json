@@ -1,0 +1,32 @@
+{
+  "schemas": {
+    "ObjectInPropertyBag": {
+      "required": [
+        "intValue",
+        "boolValue",
+        "stringValue"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "intValue": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "int64Value": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "boolValue": {
+          "type": "boolean"
+        },
+        "stringValue": {
+          "type": "string"
+        },
+        "type": {
+          "format": "url",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

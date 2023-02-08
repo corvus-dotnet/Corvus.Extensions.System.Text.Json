@@ -1,4 +1,4 @@
-﻿// <copyright file="JsonPropertyBag.cs" company="Endjin Limited">
+﻿// <copyright file="JsonElementBackedPropertyBagWithExposedJsonElement.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -9,28 +9,40 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 
 using Corvus.Json;
 
 /// <summary>
-/// A property bag that serializes neatly, and which works well with <see cref="JsonElement"/>.
+/// This is essentially the same as the real implementation, except that it exposes the underlying
+/// <see cref="JsonElement"/> directly.
 /// </summary>
-internal class JsonPropertyBag : IPropertyBag, IEnumerable<(string Key, PropertyBagEntryType Type)>
+/// <remarks>
+/// This has been retained for benchmarking comparison purposes. When the decision was taken not to
+/// expose the underlying <see cref="JsonElement"/> directly in the public API (see ADR 0001), we
+/// compared the memory use and performance of this implementation which DOES make it available
+/// against the implementation we ultimately chose. (It turned out that we were able to make
+/// property bag contents available as <see cref="JsonElement"/>s through the existing
+/// <see cref="TryGet{T}(string, out T)"/> method by detecting when the type argument was
+/// <see cref="JsonElement"/> and providing a special zero-allocation code path.) Instead of just
+/// discarding this prototype, we've moved into the benchmark project to enable those
+/// measurements to be repeated, to verify that on future runtimes, the chosen implementation
+/// continues to offer performance that is just as good as this more specialized approach.
+/// (This is particularly important because we are effectively relying on the CLR's JIT to do a
+/// good job here, so runtime changes could make this decision look wrong in the future.)
+/// </remarks>
+public class JsonElementBackedPropertyBagWithExposedJsonElement : IPropertyBag, IEnumerable<(string Key, PropertyBagEntryType Type)>
 {
     private readonly JsonSerializerOptions serializerOptions;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="JsonPropertyBag"/> class.
+    /// Initializes a new instance of the <see cref="JsonElementBackedPropertyBagWithExposedJsonElement"/> class.
     /// </summary>
     /// <param name="json">The UTF8 json data from which to initialize the property bag.</param>
     /// <param name="serializerOptions">The serializer settings to use for the property bag.</param>
-    public JsonPropertyBag(JsonElement json, JsonSerializerOptions serializerOptions)
+    public JsonElementBackedPropertyBagWithExposedJsonElement(JsonElement json, JsonSerializerOptions serializerOptions)
     {
-        // We always store a cloned version to avoid problems with the underlying
-        // JsonDocument being disposed. (If the incoming element was already cloned,
-        // no copying occurs.)
-        // See ADR 0001 for the rationale.
         this.RawJson = json.Clone();
         this.serializerOptions = serializerOptions;
     }
@@ -38,7 +50,7 @@ internal class JsonPropertyBag : IPropertyBag, IEnumerable<(string Key, Property
     /// <summary>
     /// Gets the <see cref="JsonElement"/>.
     /// </summary>
-    internal JsonElement RawJson { get; }
+    public JsonElement RawJson { get; }
 
     /// <summary>
     /// Get a strongly typed property.
@@ -58,8 +70,7 @@ internal class JsonPropertyBag : IPropertyBag, IEnumerable<(string Key, Property
                 // all our JsonElements are backed by a JsonDocument produced by
                 // the call to JsonElement.Clone in the constructor, so in theory
                 // it shouldn't need to allocate anything.
-                // Special-casing this scenario and just returning a copy of the
-                // JsonElement struct avoids allocations in practice.
+                // Special-casing this scenario and just returning theavoids
                 if (typeof(T) == typeof(JsonElement))
                 {
                     result = (T)(object)propertyValue;
