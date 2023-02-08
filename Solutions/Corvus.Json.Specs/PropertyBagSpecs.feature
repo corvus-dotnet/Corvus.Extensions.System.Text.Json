@@ -137,6 +137,39 @@ Scenario: Create from UTF8 JSON
 	| hello    | world | string  |
 	| number   | 3     | integer |
 
+	Scenario: Create from JsonElement
+	Given I create a JsonElement with these properties
+	| Property | Value | Type    |
+	| hello    | world | string  |
+	| number   | 3     | integer |
+	When I create a PropertyBag from JsonElement
+	Then the IPropertyBag should have the properties
+	| Property | Value | Type    |
+	| hello    | world | string  |
+	| number   | 3     | integer |
+
+Scenario: Create via Utf8JsonWriter
+	Given I will write these properties to the Utf8JsonWriter
+	| Property | Value | Type    |
+	| hello    | world | string  |
+	| number   | 3     | integer |
+	When I create a PropertyBag via a Utf8JsonWriter
+	Then the IPropertyBag should have the properties
+	| Property | Value | Type    |
+	| hello    | world | string  |
+	| number   | 3     | integer |
+
+Scenario: Create via Utf8JsonWriter with argument
+	Given I will write these properties to the Utf8JsonWriter
+	| Property | Value | Type    |
+	| hello    | world | string  |
+	| number   | 3     | integer |
+	When I create a PropertyBag via a Utf8JsonWriter with a context argument
+	Then the IPropertyBag should have the properties
+	| Property | Value | Type    |
+	| hello    | world | string  |
+	| number   | 3     | integer |
+	And the context argument passed to the Utf8JsonWriter callback should be the same as was passed to Create
 
 Scenario: Construct with modifications from an existing property bag that contains nested objects
 	Given I deserialize a property bag from the string

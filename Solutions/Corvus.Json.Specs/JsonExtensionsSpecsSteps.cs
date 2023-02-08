@@ -41,6 +41,10 @@ public class JsonExtensionsSpecsSteps
     private SerializationException? exception;
     private byte[]? utf8Json;
     private PocObject? poco;
+    private JsonDocument? jsonDocument;
+    private Table? tableForDeferredUtf8Write;
+    private object? utf8CreateContext;
+    private object? utf8CreateContextReceived;
 
     public JsonExtensionsSpecsSteps(FeatureContext featureContext, ScenarioContext scenarioContext)
     {
@@ -118,33 +122,28 @@ public class JsonExtensionsSpecsSteps
     }
 
     [Given("I create JSON UTF8 with these properties")]
-    public void GivenICreateAJSONString(Table table)
+    public void GivenICreateFromAJSONString(Table table)
     {
         using var utf8Json = new MemoryStream();
         using var writer = new Utf8JsonWriter(utf8Json);
-        writer.WriteStartObject();
 
-        JsonObject jo = new();
-        foreach ((string Property, string Value, string Type) row in table.CreateSet<(string Property, string Value, string Type)>())
-        {
-            writer.WritePropertyName(row.Property);
-            switch (row.Type)
-            {
-                case "string":
-                    writer.WriteStringValue(row.Value == "(null)" ? null : row.Value);
-                    break;
-                case "integer":
-                    writer.WriteNumberValue(int.Parse(row.Value));
-                    break;
-                default:
-                    throw new InvalidOperationException($"Unknown data type '{row.Type}'");
-            }
-        }
-
-        writer.WriteEndObject();
+        WritePropertiesToUtf8JsonWriter(table, writer);
         writer.Flush();
 
         this.utf8Json = utf8Json.ToArray();
+    }
+
+    [Given("I create a JsonElement with these properties")]
+    public void GivenICreateAJsonElementWithTheseProperties(Table table)
+    {
+        this.GivenICreateFromAJSONString(table);
+        this.jsonDocument = JsonDocument.Parse(this.utf8Json);
+    }
+
+    [Given("I will write these properties to the Utf8JsonWriter")]
+    public void GivenIWillWriteThesePropertiesToTheUtfWriter(Table table)
+    {
+        this.tableForDeferredUtf8Write = table;
     }
 
     [Then("the result should be null")]
@@ -293,6 +292,38 @@ public class JsonExtensionsSpecsSteps
     public void WhenICreateAPropertyBagFromTheUTFJSONString()
     {
         this.propertyBag = this.jPropertyBagFactory.Create(this.utf8Json.AsMemory());
+    }
+
+    [When("I create a PropertyBag from JsonElement")]
+    public void WhenICreateAPropertyBagFromJsonElement()
+    {
+        this.propertyBag = this.jPropertyBagFactory.Create(this.jsonDocument!.RootElement);
+    }
+
+    [When("I create a PropertyBag via a Utf8JsonWriter")]
+    public void WhenICreateAPropertyBagViaAUtfWriter()
+    {
+        this.propertyBag = this.jPropertyBagFactory.Create(writer =>
+            WritePropertiesToUtf8JsonWriter(this.tableForDeferredUtf8Write!, writer));
+    }
+
+    [When("I create a PropertyBag via a Utf8JsonWriter with a context argument")]
+    public void WhenICreateAPropertyBagViaAUtfWriterWithAContextArgument()
+    {
+        this.utf8CreateContext = new();
+        this.propertyBag = this.jPropertyBagFactory.Create(
+            this.utf8CreateContext,
+            (context, writer) =>
+            {
+                WritePropertiesToUtf8JsonWriter(this.tableForDeferredUtf8Write!, writer);
+                this.utf8CreateContextReceived = context;
+            });
+    }
+
+    [Then("the context argument passed to the Utf8JsonWriter callback should be the same as was passed to Create")]
+    public void ThenTheContextArgumentPassedToTheUtfWriterCallbackShouldBeTheSameAsWasPassedToCreate()
+    {
+        Assert.AreSame(this.utf8CreateContext, this.utf8CreateContextReceived);
     }
 
     [When(@"I get the property called ""(.*)"" as a custom object expecting an exception")]
@@ -550,6 +581,29 @@ public class JsonExtensionsSpecsSteps
             default:
                 throw new InvalidOperationException($"Unknown data type '{type}'");
         }
+    }
+
+    private static void WritePropertiesToUtf8JsonWriter(Table table, Utf8JsonWriter writer)
+    {
+        writer.WriteStartObject();
+
+        foreach ((string Property, string Value, string Type) row in table.CreateSet<(string Property, string Value, string Type)>())
+        {
+            writer.WritePropertyName(row.Property);
+            switch (row.Type)
+            {
+                case "string":
+                    writer.WriteStringValue(row.Value == "(null)" ? null : row.Value);
+                    break;
+                case "integer":
+                    writer.WriteNumberValue(int.Parse(row.Value));
+                    break;
+                default:
+                    throw new InvalidOperationException($"Unknown data type '{row.Type}'");
+            }
+        }
+
+        writer.WriteEndObject();
     }
 
     private static void CheckPocosAreEqual(string culture, CultureInfoPocObject poc)

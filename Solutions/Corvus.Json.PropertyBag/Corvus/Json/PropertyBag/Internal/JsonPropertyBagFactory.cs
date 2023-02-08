@@ -43,6 +43,45 @@ internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
         IReadOnlyDictionary<string, object> d = values is IReadOnlyDictionary<string, object> id
             ? id : new Dictionary<string, object>(values);
 
+        return this.Create(
+            d,
+            (d, w) =>
+            {
+                w.WriteStartObject();
+                foreach ((string key, object value) in d)
+                {
+                    w.WritePropertyName(key);
+                    if (value is null)
+                    {
+                        w.WriteNullValue();
+                    }
+                    else
+                    {
+                        JsonSerializer.Serialize(w, value, value.GetType(), this.serializerOptionsProvider.Instance);
+                    }
+                }
+
+                w.WriteEndObject();
+            });
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create(in JsonElement json)
+    {
+        return new JsonPropertyBag(json, this.serializerOptionsProvider.Instance);
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create(Action<Utf8JsonWriter> callback)
+    {
+        return this.Create(
+            callback,
+            (cb, w) => cb(w));
+    }
+
+    /// <inheritdoc/>
+    public IPropertyBag Create<TContext>(TContext context, Action<TContext, Utf8JsonWriter> callback)
+    {
         // We don't just serialize like this:
         //  JsonSerializer.Serialize(ms, d, this.serializerOptionsProvider.Instance);
         // because the JsonSerializerOptions are typically set up for camelCasing. And while
@@ -51,44 +90,12 @@ internal class JsonPropertyBagFactory : IJsonPropertyBagFactory
         MemoryStream ms = new();
         using (Utf8JsonWriter w = new(ms))
         {
-            w.WriteStartObject();
-            foreach ((string key, object value) in d)
-            {
-                w.WritePropertyName(key);
-                if (value is null)
-                {
-                    w.WriteNullValue();
-                }
-                else
-                {
-                    JsonSerializer.Serialize(w, value, value.GetType(), this.serializerOptionsProvider.Instance);
-                }
-            }
-
-            w.WriteEndObject();
+            callback(context, w);
         }
 
         ms.Flush();
         using var doc = JsonDocument.Parse(ms.ToArray());
         return new JsonPropertyBag(doc.RootElement, this.serializerOptionsProvider.Instance);
-    }
-
-    /// <inheritdoc/>
-    public IPropertyBag Create(in JsonElement json)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public IPropertyBag Create(Action<Utf8JsonWriter> callback)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public IPropertyBag Create<TContext>(TContext context, Action<TContext, Utf8JsonWriter> callback)
-    {
-        throw new NotImplementedException();
     }
 
     /// <inheritdoc/>
