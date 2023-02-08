@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <EndjinDisableAutoPackagesLock>true</EndjinDisableAutoPackagesLock>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
