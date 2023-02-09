@@ -11,9 +11,10 @@ namespace Corvus.Json.Serialization.Internal
     using Corvus.Json.Serialization;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="JsonSerializerOptionsProvider"/> class.
+    /// Provides access to <see cref="JsonSerializerOptions"/> via DI, incorporating any
+    /// <see cref="JsonConverter"/> instances registered in DI.
     /// </summary>
-    public class JsonSerializerOptionsProvider : IJsonSerializerOptionsProvider
+    internal class JsonSerializerOptionsProvider : IJsonSerializerOptionsProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonSerializerOptionsProvider"/> class.
