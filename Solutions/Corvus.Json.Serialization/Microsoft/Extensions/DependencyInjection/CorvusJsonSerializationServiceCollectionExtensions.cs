@@ -106,4 +106,110 @@ public static class CorvusJsonSerializationServiceCollectionExtensions
 
         return services;
     }
+
+    /// <summary>
+    /// Adds type-specific serialization handling for enumeration types. This must be called before
+    /// registering any converters that will handle all enumeration types.
+    /// </summary>
+    /// <param name="services">The target service collection.</param>
+    /// <param name="namingPolicy">The naming policy to apply for these types.</param>
+    /// <param name="allowIntegerValues">
+    /// Indicates whether enumeration types' integer values will be accepted during
+    /// deserialization.
+    /// </param>
+    /// <param name="enumTypes">The types for which to apply a specific naming policy.</param>
+    /// <returns>The service collection.</returns>
+    /// <remarks>
+    /// <para>
+    /// Some applications use a mixture of casing conventions when serializing enumerations types.
+    /// This might be to conform to external specifications, or simply for backwards compatibility
+    /// with older service versions. In these cases, a single global policy cannot be registered.
+    /// </para>
+    /// <para>
+    /// If an application wants to register a global default enumeration handling policy, but to
+    /// override the behaviour for one or more specific enumeration types, the registration order
+    /// matters: you MUST call this method first. <c>System.Text.Json</c> will consider converters
+    /// in the order in which we supply them, meaning that if any general-purpose converters are
+    /// registered ahead of specialized converters, the specialized ones won't get a chance to run
+    /// for types that the more generalized ones say they can handle.
+    /// </para>
+    /// </remarks>
+    public static IServiceCollection AddConverterForEnums(
+        this IServiceCollection services,
+        JsonNamingPolicy? namingPolicy,
+        bool allowIntegerValues,
+        params Type[] enumTypes)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        if (!services.Any(s => s.ImplementationType == typeof(JsonStringSpecificEnumConverter)))
+        {
+            services.AddSingleton<JsonConverter, JsonStringSpecificEnumConverter>();
+        }
+
+        foreach (Type enumType in enumTypes)
+        {
+            services.AddSingleton(new JsonStringSpecificEnumConverter.Policy(enumType, namingPolicy, allowIntegerValues));
+        }
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds type-specific camelCased serialization handling for enumeration types. This must be
+    /// called before registering any converters that will handle all enumeration types.
+    /// </summary>
+    /// <param name="services">The target service collection.</param>
+    /// <param name="enumTypes">The types for which to apply a specific naming policy.</param>
+    /// <returns>The service collection.</returns>
+    /// <remarks>
+    /// <para>
+    /// Some applications use a mixture of casing conventions when serializing enumerations types.
+    /// This might be to conform to external specifications, or simply for backwards compatibility
+    /// with older service versions. In these cases, a single global policy cannot be registered.
+    /// </para>
+    /// <para>
+    /// If an application wants to register a global default enumeration handling policy, but to
+    /// override the behaviour for one or more specific enumeration types, the registration order
+    /// matters: you MUST call this method first. <c>System.Text.Json</c> will consider converters
+    /// in the order in which we supply them, meaning that if any general-purpose converters are
+    /// registered ahead of specialized converters, the specialized ones won't get a chance to run
+    /// for types that the more generalized ones say they can handle.
+    /// </para>
+    /// </remarks>
+    public static IServiceCollection AddCamelCaseConverterForEnums(
+        this IServiceCollection services,
+        params Type[] enumTypes)
+    {
+        return services.AddConverterForEnums(JsonNamingPolicy.CamelCase, false, enumTypes);
+    }
+
+    /// <summary>
+    /// Adds type-specific PascalCased serialization handling for enumeration types. This must be
+    /// called before registering any converters that will handle all enumeration types.
+    /// </summary>
+    /// <param name="services">The target service collection.</param>
+    /// <param name="enumTypes">The types for which to apply a specific naming policy.</param>
+    /// <returns>The service collection.</returns>
+    /// <remarks>
+    /// <para>
+    /// Some applications use a mixture of casing conventions when serializing enumerations types.
+    /// This might be to conform to external specifications, or simply for backwards compatibility
+    /// with older service versions. In these cases, a single global policy cannot be registered.
+    /// </para>
+    /// <para>
+    /// If an application wants to register a global default enumeration handling policy, but to
+    /// override the behaviour for one or more specific enumeration types, the registration order
+    /// matters: you MUST call this method first. <c>System.Text.Json</c> will consider converters
+    /// in the order in which we supply them, meaning that if any general-purpose converters are
+    /// registered ahead of specialized converters, the specialized ones won't get a chance to run
+    /// for types that the more generalized ones say they can handle.
+    /// </para>
+    /// </remarks>
+    public static IServiceCollection AddPascalCaseConverterForEnums(
+        this IServiceCollection services,
+        params Type[] enumTypes)
+    {
+        return services.AddConverterForEnums(null, false, enumTypes);
+    }
 }

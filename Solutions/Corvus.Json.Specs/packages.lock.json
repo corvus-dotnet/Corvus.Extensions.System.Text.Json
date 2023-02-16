@@ -25,6 +25,21 @@
           "Microsoft.SourceLink.GitHub": "1.1.1"
         }
       },
+      "Roslynator.Analyzers": {
+        "type": "Direct",
+        "requested": "[4.2.0, )",
+        "resolved": "4.2.0",
+        "contentHash": "3N8CNx1Q/Q5VDDL7qgfZRgTURyMqzHAkAB59AZKRnsOXoh2n9xRzhiBMIbJaUtBATmieECBx68GcjRn2xoNDug=="
+      },
+      "StyleCop.Analyzers": {
+        "type": "Direct",
+        "requested": "[1.2.0-beta.435, )",
+        "resolved": "1.2.0-beta.435",
+        "contentHash": "TADk7vdGXtfTnYCV7GyleaaRTQjfoSfZXprQrVMm7cSJtJbFc1QIbWPyLvrgrfGdfHbGmUPvaN4ODKNxg2jgPQ==",
+        "dependencies": {
+          "StyleCop.Analyzers.Unstable": "1.2.0.435"
+        }
+      },
       "BoDi": {
         "type": "Transitive",
         "resolved": "1.5.0",
@@ -463,6 +478,11 @@
         "dependencies": {
           "SpecFlow": "[3.9.74]"
         }
+      },
+      "StyleCop.Analyzers.Unstable": {
+        "type": "Transitive",
+        "resolved": "1.2.0.435",
+        "contentHash": "ouwPWZxbOV3SmCZxIRqHvljkSzkCyi1tDoMzQtDb/bRP8ctASV/iRJr+A2Gdj0QLaLmWnqTWDrH82/iP+X80Lg=="
       },
       "System.AppContext": {
         "type": "Transitive",
@@ -1345,7 +1365,7 @@
         "type": "Project",
         "dependencies": {
           "Corvus.Json.Abstractions": "[3.0.0, )",
-          "Corvus.Json.Serialization": "[2.0.0-first-working-version.29-local.2, )"
+          "Corvus.Json.Serialization": "[1.0.0, )"
         }
       },
       "corvus.json.serialization": {

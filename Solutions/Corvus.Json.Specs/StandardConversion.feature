@@ -1,13 +1,12 @@
-﻿@perFeatureContainer
-
-Feature: StandardConversion for SystemTextJson
+﻿Feature: StandardConversion for SystemTextJson
 	In order to ensure common serialization specifications
 	As a developer
 	I want to be provided with standard serializer settings
 
 Scenario Outline: Serialize an object with convertible properties
-	Given I serialize a POCO with "<SomeValue>", "<SomeDateTime>", "<SomeNullableDateTime>", "<SomeCulture>", "<SomeEnum>"
-	Then the result should be "<Content>"
+	Given I have registered a global enum policy of 'CamelCase'
+	And I serialize a POCO with '<SomeValue>', '<SomeDateTime>', '<SomeNullableDateTime>', '<SomeCulture>', '<SomeEnum>'
+	Then the serialized JSON text should be '<Content>'
 
 	Examples:
 		| SomeValue   | SomeDateTime                  | SomeNullableDateTime          | SomeCulture | SomeEnum | Content                                                                                                                                                                     |
@@ -16,8 +15,9 @@ Scenario Outline: Serialize an object with convertible properties
 
 
 Scenario Outline: Deserialize an object with convertible properties
-	Given I deserialize a POCO with the json string "<Content>"
-	Then the result should have values "<SomeValue>", "<SomeDateTime>", "<SomeNullableDateTime>", "<SomeCulture>", "<SomeEnum>"
+	Given I have registered a global enum policy of 'CamelCase'
+	And I deserialize a POCO with the json string '<Content>'
+	Then the deserialized POCO should have values '<SomeValue>', '<SomeDateTime>', '<SomeNullableDateTime>', '<SomeCulture>', '<SomeEnum>'
 
 	Examples:
 		| SomeValue   | SomeDateTime                  | SomeNullableDateTime          | SomeCulture | SomeEnum | Content                                                                                                                                                                         |
@@ -32,8 +32,10 @@ Scenario Outline: Deserialize an object with convertible properties
 # unusual conversion - it uses a different DI setup from everything else.
 
 Scenario Outline: Serialize an object with convertible properties using the DateTimeOffsetToIso8601AndUnixTimeConverter
-	Given I serialize a POCO with "<SomeValue>", "<SomeDateTime>", "<SomeNullableDateTime>", "<SomeCulture>", "<SomeEnum>" with the DateTimeOffsetToIso8601AndUnixTimeConverter
-	Then the result should be "<Content>"
+	Given I have registered a global enum policy of 'CamelCase'
+	And I have registered the DateTimeOffsetToIso8601AndUnixTimeConverter
+	Given I serialize a POCO with '<SomeValue>', '<SomeDateTime>', '<SomeNullableDateTime>', '<SomeCulture>', '<SomeEnum>'
+	Then the serialized JSON text should be '<Content>'
 
 	Examples:
 		| SomeValue   | SomeDateTime                  | SomeNullableDateTime          | SomeCulture | SomeEnum | Content                                                                                                                                                                                                                                                             |
@@ -41,8 +43,10 @@ Scenario Outline: Serialize an object with convertible properties using the Date
 		| Hello there | 2018-04-15T09:09:31.234+01:00 |                               |             | Second   | {"someValue":"Hello there","someDateTime":{"dateTimeOffset":"2018-04-15T09:09:31.234+01:00","unixTime":1523779771234},"someEnum":"second"}                                                                                                                          |
 
 Scenario Outline: Deserialize an object with convertible properties using the DateTimeOffsetToIso8601AndUnixTimeConverter
-	Given I deserialize a POCO with the json string "<Content>" with the DateTimeOffsetToIso8601AndUnixTimeConverter
-	Then the result should have values "<SomeValue>", "<SomeDateTime>", "<SomeNullableDateTime>", "<SomeCulture>", "<SomeEnum>"
+	Given I have registered a global enum policy of 'CamelCase'
+	And I have registered the DateTimeOffsetToIso8601AndUnixTimeConverter
+	And I deserialize a POCO with the json string '<Content>'
+	Then the deserialized POCO should have values '<SomeValue>', '<SomeDateTime>', '<SomeNullableDateTime>', '<SomeCulture>', '<SomeEnum>'
 
 	Examples:
 		| SomeValue   | SomeDateTime                  | SomeNullableDateTime          | SomeCulture | SomeEnum | Content                                                                                                                                                                                                                                                             |
