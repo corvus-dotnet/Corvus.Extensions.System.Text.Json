@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-
+    <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
     <RootNamespace>Corvus.Json.Specs</RootNamespace>
     <!-- Disabling SA1204 because it prioritizes static/non-static over public/non-public, which doesn't fit very well
@@ -54,7 +54,7 @@
     <ProjectReference Include="..\Corvus.Json.PropertyBag\Corvus.Json.PropertyBag.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="specflow.json">
+    <None Update="reqnroll.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
