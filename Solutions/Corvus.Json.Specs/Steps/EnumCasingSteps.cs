@@ -14,8 +14,7 @@ using Corvus.Json.Specs.Samples;
 using Microsoft.Extensions.DependencyInjection;
 
 using NUnit.Framework;
-
-using TechTalk.SpecFlow;
+using Reqnroll;
 
 [Binding]
 public class EnumCasingSteps
@@ -24,8 +23,7 @@ public class EnumCasingSteps
 
     private EnumPoco? deserialized;
 
-    public EnumCasingSteps(
-        JsonExtensionsSpecsSteps jsonSteps)
+    public EnumCasingSteps(JsonExtensionsSpecsSteps jsonSteps)
     {
         this.jsonSteps = jsonSteps;
     }

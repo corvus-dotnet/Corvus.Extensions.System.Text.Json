@@ -39,5 +39,11 @@ internal class JsonStringSpecificEnumConverter : JsonConverterFactory
         return new JsonStringEnumConverter(namingPolicy, allowIntegerValues).CreateConverter(typeToConvert, options);
     }
 
+    /// <summary>
+    /// A policy for a specific enumeration type.
+    /// </summary>
+    /// <param name="EnumType">The type of the enumeration.</param>
+    /// <param name="NamingPolicy">The naming policy to use for the enumeration values.</param>
+    /// <param name="AllowIntegerValues">A value indicating whether integer values are allowed for the enumeration.</param>
     internal record Policy(Type EnumType, JsonNamingPolicy? NamingPolicy, bool AllowIntegerValues);
 }

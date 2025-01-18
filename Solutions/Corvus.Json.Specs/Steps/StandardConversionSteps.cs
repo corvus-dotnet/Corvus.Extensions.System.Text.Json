@@ -11,8 +11,7 @@ using System.Text.Json;
 using Corvus.Json.Specs.Samples;
 
 using Microsoft.Extensions.DependencyInjection;
-
-using TechTalk.SpecFlow;
+using Reqnroll;
 
 [Binding]
 public class StandardConversionSteps

@@ -16,9 +16,7 @@ using Corvus.Json.Specs.Samples;
 using Microsoft.Extensions.DependencyInjection;
 
 using NUnit.Framework;
-
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
+using Reqnroll;
 
 [Binding]
 public class JsonExtensionsSpecsSteps
