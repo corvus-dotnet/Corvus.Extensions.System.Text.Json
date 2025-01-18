@@ -71,6 +71,16 @@ jobs:
                   name: 'pending_release'
                 })
               }
+              if ( labels.data.map(l => l.name).includes("pending_release") ) {
+                // Remove the 'pending_release' label
+                await github.rest.issues.removeLabel({
+                  owner: context.payload.repository.owner.login,
+                  repo: context.payload.repository.name,
+                  issue_number: context.payload.pull_request.number,
+                  name: 'pending_release'
+                })
+              }
+              
               return true
             }
             return false
@@ -175,7 +185,7 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          return ( '${{ steps.is_human_pr.outputs.result }}' == 'True' || '${{ steps.watch_dependabot_prs.outputs.is_complete }}' == 'True') && '${{ steps.get_release_pending_pr_list.outputs.is_release_pending }}' == 'True'
+          return ( '${{ steps.is_human_pr.outputs.result }}' == 'true' || '${{ steps.watch_dependabot_prs.outputs.is_complete }}' == 'True') && '${{ steps.get_release_pending_pr_list.outputs.is_release_pending }}' == 'true'
 
     - name: Display job outputs
       run: |
