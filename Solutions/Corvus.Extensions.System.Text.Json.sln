@@ -1,16 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{C011D1F5-E3A2-476B-8029-D25369D6D19E}"
 	ProjectSection(SolutionItems) = preProject
-		..\azure-pipelines.yml = ..\azure-pipelines.yml
+		..\build.ps1 = ..\build.ps1
+		..\GitVersion.yml = ..\GitVersion.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Extensions.System.Text.Json", "Corvus.Extensions.System.Text.Json\Corvus.Extensions.System.Text.Json.csproj", "{5765619F-5602-41A7-85BA-8078F48076B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Json.PropertyBag", "Corvus.Json.PropertyBag\Corvus.Json.PropertyBag.csproj", "{5765619F-5602-41A7-85BA-8078F48076B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Extensions.System.Text.Json.Specs", "Corvus.Extensions.System.Text.Json.Specs\Corvus.Extensions.System.Text.Json.Specs.csproj", "{B0E516F4-3513-4B7C-ADE8-2BBC5D5C5BD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Json.Specs", "Corvus.Json.Specs\Corvus.Json.Specs.csproj", "{B0E516F4-3513-4B7C-ADE8-2BBC5D5C5BD5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Json.Serialization", "Corvus.Json.Serialization\Corvus.Json.Serialization.csproj", "{0B55B1A4-7BEC-49D6-9A12-CC2DB5B33288}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{0F51D286-550B-4225-B746-2A5A36BD6C5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.Json.PropertyBag.Benchmarks", "Corvus.Json.PropertyBag.Benchmarks\Corvus.Json.PropertyBag.Benchmarks.csproj", "{BDD88A7C-DDF3-4514-A08C-C4A5B7308658}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +33,20 @@ Global
 		{B0E516F4-3513-4B7C-ADE8-2BBC5D5C5BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0E516F4-3513-4B7C-ADE8-2BBC5D5C5BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0E516F4-3513-4B7C-ADE8-2BBC5D5C5BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B55B1A4-7BEC-49D6-9A12-CC2DB5B33288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B55B1A4-7BEC-49D6-9A12-CC2DB5B33288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B55B1A4-7BEC-49D6-9A12-CC2DB5B33288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B55B1A4-7BEC-49D6-9A12-CC2DB5B33288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDD88A7C-DDF3-4514-A08C-C4A5B7308658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDD88A7C-DDF3-4514-A08C-C4A5B7308658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDD88A7C-DDF3-4514-A08C-C4A5B7308658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDD88A7C-DDF3-4514-A08C-C4A5B7308658}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BDD88A7C-DDF3-4514-A08C-C4A5B7308658} = {0F51D286-550B-4225-B746-2A5A36BD6C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2175CEA6-7F27-466A-9ED2-2AF255A451F7}

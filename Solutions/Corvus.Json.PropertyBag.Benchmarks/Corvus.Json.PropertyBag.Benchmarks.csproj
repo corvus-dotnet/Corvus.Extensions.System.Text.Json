@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <EndjinDisableAutoPackagesLock>true</EndjinDisableAutoPackagesLock>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  
+  <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!--
+    CS1591, SA1600 - XML doc required. Not necessary for benchmark project
+    CA1816 - dispose pattern-related nonsense asking us to call GC.SuppressFinalizer in Dispose
+    SA1601 - partial element documentation - not wanted because we're doing code gen (and VS is being funny about an in-file suppression for this one)
+    IDE0130 - namespaces must match folder structure; this is a benchmark project and this is not particularly important
+    IDE0290 - Use primary constructor; this tends to be over-eager
+    -->
+    <NoWarn>$(NoWarn);CS1591;SA1600;CA1816;SA1601;IDE0130;IDE0290</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SchemaTypes\Schema.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="SchemaTypes\Schema.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.2.3" />
+    <PackageReference Include="Corvus.Json.SourceGenerator" Version="4.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Corvus.Json.PropertyBag\Corvus.Json.PropertyBag.csproj" />
+  </ItemGroup>
+
+</Project>
