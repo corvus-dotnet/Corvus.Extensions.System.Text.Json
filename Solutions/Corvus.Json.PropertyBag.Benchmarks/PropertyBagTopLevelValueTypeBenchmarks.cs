@@ -32,7 +32,7 @@ public class PropertyBagTopLevelValueTypeBenchmarks : PropertyBagBenchmarkBase
     // Before adding the test for typeof(T) == typeof(JsonElement), this caused allocation (160B)
     // but with that test in place, this become zero-allocation
     [Benchmark]
-    public int GetDirectIntPropertyViaGetAsJsonElementToJsonInteger()
+    public JsonInteger GetDirectIntPropertyViaGetAsJsonElementToJsonInteger()
     {
         if (!this.RealJsonPropertyBag.TryGet("intProperty", out JsonElement elem))
         {
@@ -65,9 +65,9 @@ public class PropertyBagTopLevelValueTypeBenchmarks : PropertyBagBenchmarkBase
         return intProperty;
     }
 
-    // Causes allocation (160B)
+    // Causes allocation (144B)
     [Benchmark]
-    public int GetDirectIntPropertyViaGetAsJsonElementToJsonIntegerUtf8Backed()
+    public JsonInteger GetDirectIntPropertyViaGetAsJsonElementToJsonIntegerUtf8Backed()
     {
         if (!this.Utf8ArrayBackedPropertyBag.TryGet("intProperty", out JsonElement elem))
         {
@@ -85,7 +85,7 @@ public class PropertyBagTopLevelValueTypeBenchmarks : PropertyBagBenchmarkBase
 
     // No allocations
     [Benchmark]
-    public int GetDirectIntPropertyiaGetAsJsonElementToJsonIntegerExposedJsonElement()
+    public JsonInteger GetDirectIntPropertyViaGetAsJsonElementToJsonIntegerExposedJsonElement()
     {
         if (!this.PropertyBagWithExposedJsonElement.RawJson.TryGetProperty("intProperty", out JsonElement elem))
         {
