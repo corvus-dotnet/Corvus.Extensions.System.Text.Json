@@ -34,7 +34,7 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.2.3" />
-    <PackageReference Include="Corvus.Json.SourceGenerator" Version="4.2.3">
+    <PackageReference Include="Corvus.Json.SourceGenerator" Version="5.1.16">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
